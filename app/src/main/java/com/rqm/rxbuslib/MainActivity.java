@@ -21,17 +21,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clock();
+                RxBus.getInstance().post(101,TAG);
+            }
+        });
+
+        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void clock() {
-
-        RxBus.getInstance().post(101,TAG);
-        startActivity(new Intent(this,TwoActivity.class));
-    }
 
     @Override
     protected void onDestroy() {
