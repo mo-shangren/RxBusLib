@@ -21,10 +21,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //发送的方法，有点小缺陷，不能发送null
                 RxBus.getInstance().post(101,TAG);
             }
         });
 
+        //接收的方法，验证发送的code和发送的数据类型同时通过才会触发
         RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //一般在你的BaseActivity中的onDestroy加上这个方法就行，
+        //有生命周期的base类里面的onDestroy加上这个，你有用到RxJava的话。
         RxBus.getInstance().unRegister(this);
     }
 }
