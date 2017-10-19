@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //一般在你的BaseActivity中的onDestroy加上这个方法就行，
-        //有生命周期的base类里面的onDestroy加上这个，你有用到RxJava的话。
+        //有生命周期的base类（广播接收者，服务等）里面的onDestroy加上这个，你有用到RxJava的话。
         RxBus.getInstance().unRegister(this);
     }
 }
