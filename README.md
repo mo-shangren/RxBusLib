@@ -13,7 +13,15 @@ Step 2. Add the dependency
 	        compile 'com.github.raoqingmou:RxBusLib:1.0.1'
 	}
 
-Step 3. 举个栗子
+
+Step 3. 说明：
+	
+	##致敬开源项目：JakeWharton/RxBinding，在此项目基础上完成，
+	##使用此RxBus的项目无需重新依赖RxJava，RxAndroid，RxBinding等
+	
+
+
+Step 4. 举个栗子
 
 	/**
 	 * 发送的方法，发送的code和数据，会有双重验证
