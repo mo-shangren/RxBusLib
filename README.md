@@ -14,8 +14,16 @@ Step 2. Add the dependency
 	}
 
 Step 3. 举个栗子
-	//接收的方法，验证发送的code和发送的数据类型同时通过才会触发
-        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
+
+	/**
+	 * 发送的方法，发送的code和数据，会有双重验证
+	 */
+	RxBus.getInstance().post(101,TAG);
+
+	/**
+	 * 接收的方法，验证发送的code和发送的数据类型同时通过才会触发
+	 */
+        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
                 Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
