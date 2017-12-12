@@ -13,7 +13,7 @@ Step 2. Add the dependency
 	        compile 'com.github.raoqingmou:RxBusLib:1.0.1'
 	}
 
-
+Step 3. 举个栗子
 	//接收的方法，验证发送的code和发送的数据类型同时通过才会触发
         RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
             @Override
@@ -22,7 +22,6 @@ Step 2. Add the dependency
             }
         });
 	
-Step 3. 举个栗子
 
 	/**
 	 * 注销方法
