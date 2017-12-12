@@ -22,7 +22,8 @@ Step 2. Add the dependency
             }
         });
 	
-	
+Step 3. 举个栗子
+
 	/**
 	 * 注销方法
 	 * 一般在你的BaseActivity中的onDestroy加上这个方法就行，其他地方无需做处理
