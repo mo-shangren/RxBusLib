@@ -23,7 +23,7 @@ Step 3. 举个栗子
 	/**
 	 * 接收的方法，验证发送的code和发送的数据类型同时通过才会触发
 	 */
-        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
+	 RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
                 Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
