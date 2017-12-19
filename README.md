@@ -18,6 +18,8 @@ Step 3. 说明：
 	
 	##致敬开源项目：JakeWharton/RxBinding，在此项目基础上完成，
 	##使用此RxBus的项目无需重新依赖RxJava，RxAndroid，RxBinding等
+	##有尝试过通过application获取生命周期，这样就不用在多个Base里释放了，但在下菜，失败了，只能找到activity的生命周期
+	##如果有大神路过麻烦教我一下谢谢
 	
 
 
