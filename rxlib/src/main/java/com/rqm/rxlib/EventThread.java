@@ -5,6 +5,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * Bus的Rx线程管理, 默认传入主线程
  * Created by Android on 2016/6/8.
  */
 public enum EventThread {

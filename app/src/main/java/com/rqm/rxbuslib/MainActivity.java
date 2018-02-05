@@ -1,36 +1,44 @@
 package com.rqm.rxbuslib;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
-
-import com.rqm.rxlib.RxBus;
-
-import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity {
+//public class MainActivity extends AppCompatActivity {e
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // 把实现了生命周期感知的MyObserver注册到activity里, 这样一来, 就可以根据注解监听对应的生命周期了
+        this.getLifecycle().addObserver(new MyObserver());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.buttom).setOnClickListener(new View.OnClickListener() {
+//        findViewById(R.id.buttom).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                RxBus.getInstance().post(101,TAG);
+//            }
+//        });
+
+        findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RxBus.getInstance().post(101,TAG);
+              startActivity(new Intent(MainActivity.this, TestActivity.class));
             }
         });
+//        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
+//            @Override
+//            public void accept(String s) throws Exception {
+//                Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//getLi
 
-        RxBus.getInstance().tObservable(this, 101, String.class, new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -38,6 +46,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.getInstance().unRegister(this);
+//        RxBus.getInstance().unRegister(this);
     }
 }

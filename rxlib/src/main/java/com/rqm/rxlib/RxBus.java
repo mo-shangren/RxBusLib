@@ -1,6 +1,9 @@
 package com.rqm.rxlib;
 
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +23,9 @@ import static com.rqm.rxlib.EventThread.MAIN_THREAD;
  * Created by raoqingmou on 2017/7/15.
  */
 
-public class RxBus {
+public class RxBus implements LifecycleObserver {
+    private static final String TAG = "RxBus";
+
     protected static RxBus instance;
 
     public static RxBus getInstance() {
@@ -67,12 +72,22 @@ public class RxBus {
 
     /**
      * 订阅事件
+     * 默认事件的执行线程为主线程
      *
      * @return
      */
-    public<T> void tObservable(Object object, final int code, final Class<T> eventType, Scheduler scheduler,
-                               Consumer<T> consumer) {
-        putSubscriptionsData(object,bus.ofType(Msg.class)//判断接收事件类型
+    public <T> void tObservable(Object subscriber, final int code, final Class<T> eventType, Consumer<T> consumer) {
+        tObservable(subscriber, code, eventType, EventThread.getScheduler(MAIN_THREAD), consumer);
+    }
+
+    /**
+     * 订阅事件
+     * 需要指定事件的执行线程(scheduler)
+     *
+     * @return
+     */
+    public <T> void tObservable(Object subscriber, final int code, final Class<T> eventType, Scheduler scheduler, Consumer<T> consumer) {
+        putSubscriptionsData(subscriber, bus.ofType(Msg.class)//判断接收事件类型
                 .filter(new Predicate<Msg>() {
                     @Override
                     public boolean test(Msg msg) throws Exception {
@@ -90,10 +105,6 @@ public class RxBus {
                 .subscribe(consumer));
     }
 
-    public<T> void tObservable(Object object, final int code, final Class<T> eventType, Consumer<T> consumer) {
-        tObservable(object,code,eventType, EventThread.getScheduler(MAIN_THREAD),consumer);
-    }
-
     /**
      * 添加订阅者到map空间来unRegister
      *
@@ -104,6 +115,15 @@ public class RxBus {
         CompositeDisposable subs = subscriptions.get(subscriber);
         if (subs == null) {
             subs = new CompositeDisposable();
+
+            // 如果订阅者实现了LifecycleOwner, 就对其添加一个LifecycleObserver来绑定生命周期, 从而实现自动解绑
+            if (subscriber instanceof LifecycleOwner) {
+                Log.i(TAG, "注册事件生命周期");
+                SubscriberLifecycleHolder subscriberLifecycleHolder = new SubscriberLifecycleHolder((LifecycleOwner) subscriber);
+                ((LifecycleOwner) subscriber).getLifecycle().addObserver(subscriberLifecycleHolder);
+            }else{
+                Log.i(TAG, "不是Lifecycle框架, 没注册生命周期");
+            }
         }
         subs.add(disposable);
         subscriptions.put(subscriber, subs);
@@ -115,13 +135,16 @@ public class RxBus {
      * @param subscriber 订阅者
      */
     public void unRegister(Object subscriber) {
+        Log.i(TAG, "unRegister");
         if (subscriber != null) {
             CompositeDisposable compositeDisposable = subscriptions.get(subscriber);
             if (compositeDisposable != null) {
                 compositeDisposable.dispose();
                 subscriptions.remove(subscriber);
+                Log.i(TAG, "unRegister - remove");
             }
         }
+        Log.i(TAG, "unRegister-end");
     }
 
 }
