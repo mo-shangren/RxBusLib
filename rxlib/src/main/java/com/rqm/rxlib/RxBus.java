@@ -1,6 +1,5 @@
 package com.rqm.rxlib;
 
-import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -23,7 +22,7 @@ import static com.rqm.rxlib.EventThread.MAIN_THREAD;
  * Created by raoqingmou on 2017/7/15.
  */
 
-public class RxBus implements LifecycleObserver {
+public class RxBus {
     private static final String TAG = "RxBus";
 
     protected static RxBus instance;
