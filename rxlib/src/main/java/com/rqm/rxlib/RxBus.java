@@ -76,7 +76,7 @@ public class RxBus {
                 .filter(new Predicate<Msg>() {
                     @Override
                     public boolean test(Msg msg) throws Exception {
-                        return msg.code == code;
+                        return msg.code == code && msg.object.getClass() == eventType;
                     }
                 })
                 .map(new Function<Msg, Object>() {
